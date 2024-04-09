@@ -9,26 +9,19 @@ public class Calculator {
         int num2 = Integer.parseInt(args[1]);
         String operator = args[2];
 
-        findCorrectOperation(num1, num2, operator);
+        System.out.print(findCorrectOperation(num1, num2, operator));
 
 
 
     }
 
-    public static void findCorrectOperation(int num1, int num2, String operator) {
-        switch (operator) {
-            case "+":
-                System.out.println(num1 + num2);
-                break;
-            case "-":
-                System.out.println(num1 - num2);
-                break;
-            case "x":
-                System.out.println(num1 * num2);
-                break;
-            default:
-                System.out.println("Invalid operator");
-        }
+    public static int findCorrectOperation(int num1, int num2, String operator) {
+        return switch (operator) {
+            case "+" -> num1 + num2;
+            case "-" -> num1 - num2;
+            case "x" -> num1 * num2;
+            default -> 0;
+        };
     }
 
 
