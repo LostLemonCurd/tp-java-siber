@@ -46,7 +46,7 @@ public class FileHandler {
                     while (myReader.hasNextLine()) {
                         String data = myReader.nextLine();
                         String[] splitData = data.split(" ");
-                        if (CalculatorTwoLeRetour.verifiyOpArgs(splitData)) {
+                        if (CalculatorTwoLeRetour.verifyOpArgs(splitData)) {
                             int num1 = Integer.parseInt(splitData[0]);
                             int num2 = Integer.parseInt(splitData[1]);
                             String operator = splitData[2].toLowerCase();
