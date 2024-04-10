@@ -18,7 +18,6 @@ public class FileHandler {
     public static List<String> getFiles(String path) {
         File dir = new File(path);
         return findCorrectFiles(dir.listFiles());
-
     }
 
     public static List<String> findCorrectFiles(File[] files){
@@ -35,42 +34,60 @@ public class FileHandler {
         return filesPath;
     }
 
-    public static void computeFiles(List<String> filePath) {
+    public static void computeFiles(List<String> filePath) throws FileNotFoundException {
         for (String s : filePath) {
-            try {
-                File myObj = new File(s);
-                Scanner myReader = new Scanner(myObj);
-                File newFile = new File(getCorrectDestination(myObj.getAbsolutePath()));
-                if (newFile.createNewFile()) {
-                    FileWriter myWriter = new FileWriter(newFile);
-                    while (myReader.hasNextLine()) {
-                        String data = myReader.nextLine();
-                        String[] splitData = data.split(" ");
-                        if (CalculatorTwoLeRetour.verifyOpArgs(splitData)) {
-                            int num1 = Integer.parseInt(splitData[0]);
-                            int num2 = Integer.parseInt(splitData[1]);
-                            String operator = splitData[2].toLowerCase();
-                            OperationStrategy operation = OperationFactory.createOperation(operator);
-                            int result = operation.calculate(num1, num2);
-                            myWriter.write("L'opération " + num1 + " " + operator + " " + num2 + " est égale à: " + result + "\n");
-                        } else {
-                            myWriter.write("L'opération " + splitData[0] + " " + splitData[2] + " " + splitData[1] + " est égale à : " + "ERROR" + "\n");
-                        }
-                    }
-                    myWriter.close();
-                } else {
-                    printAny("Error", "File already exists.");
-                }
-            } catch (FileNotFoundException e) {
-                printAny("Error","An error occurred.");
-                printAny("Error",e.getMessage());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            File myFile = new File(s);
+            List<String> dataFile = extractDataFromFile(myFile);
+            String fileName = getCorrectDestination(myFile.getAbsolutePath());
+            fileCreation(dataFile, fileName);
         }
     }
 
     public static String getCorrectDestination(String absolutePath) {
         return absolutePath.replace(".op", ".res");
+    }
+
+    public static void fileCreation(List<String> dataFile, String fileName) {
+        try {
+            File newFile = new File(fileName);
+            if (newFile.createNewFile()) {
+                FileWriter myWriter = new FileWriter(newFile);
+                for (String s : dataFile) {
+                    String content = computeFileContent(s);
+                    myWriter.write(content);
+                }
+                myWriter.close();
+            } else {
+                printAny("Error", "File already exists.");
+            }
+        } catch (FileNotFoundException e) {
+            printAny("Error","An error occurred.");
+            printAny("Error",e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static List<String> extractDataFromFile(File myFile) throws FileNotFoundException {
+        Scanner myReader = new Scanner(myFile);
+        List<String> data = new ArrayList<>();
+        while (myReader.hasNextLine()) {
+            data.add(myReader.nextLine());
+        }
+        return data;
+    }
+
+    public static String computeFileContent(String content) {
+        String[] splitData = content.split(" ");
+        if (CalculatorTwoLeRetour.verifyOpArgs(splitData)) {
+            int num1 = Integer.parseInt(splitData[0]);
+            int num2 = Integer.parseInt(splitData[1]);
+            String operator = splitData[2].toLowerCase();
+            OperationStrategy operation = OperationFactory.createOperation(operator);
+            int result = operation.calculate(num1, num2);
+            return "L'opération " + num1 + " " + operator + " " + num2 + " est égale à: " + result + "\n";
+        } else {
+            return "L'opération " + splitData[0] + " " + splitData[2] + " " + splitData[1] + " est égale à : " + "ERROR" + "\n";
+        }
     }
 }

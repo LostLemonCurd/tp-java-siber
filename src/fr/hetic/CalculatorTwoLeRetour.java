@@ -1,12 +1,14 @@
 package fr.hetic;
 import fr.hetic.fileHandler.FileHandler;
+
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import static fr.hetic.PrintUtil.printAny;
 
 public class CalculatorTwoLeRetour {
-    public static void main(String[] args) {
-                List<String> filePath = FileHandler.getFiles(args[0]);
+    public static void startProcessing(String args) throws FileNotFoundException {
+                List<String> filePath = FileHandler.getFiles(args);
                 if (!filePath.isEmpty()) {
                     FileHandler.computeFiles(filePath);
                 } else {
