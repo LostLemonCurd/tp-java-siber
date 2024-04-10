@@ -4,7 +4,7 @@ import fr.hetic.fileHandler.FileHandler;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-import static fr.hetic.PrintUtil.printAny;
+import static fr.hetic.PrintUtil.log;
 
 public class CalculatorTwoLeRetour {
     public static void startProcessing(String args) throws FileNotFoundException {
@@ -12,7 +12,7 @@ public class CalculatorTwoLeRetour {
                 if (!filePath.isEmpty()) {
                     FileHandler.computeFiles(filePath);
                 } else {
-                    printAny("Erreur", "il n'y a pas de fichiers d'opérations");
+                    log("Erreur", "il n'y a pas de fichiers d'opérations");
                 }
 
     }
@@ -20,8 +20,10 @@ public class CalculatorTwoLeRetour {
     public static Boolean verifyOpArgs(String[] args) {
         List<String> correctOperators = Arrays.asList("+", "-", "x", "*");
      try {
+         log("args+++++", args);
+         log("LENGTH+++++", args.length);
          if (args.length != 3) {
-             throw new Exception("Number of arguments is not equal to three");
+             throw new Exception("Number of arguments is not equal to three arguments");
          }
          if (!correctOperators.contains(args[2])) {
              throw new Exception("Wrong operator");
@@ -30,7 +32,7 @@ public class CalculatorTwoLeRetour {
          Integer.parseInt(args[1]);
          return true;
      } catch (Exception e) {
-         printAny("Error: ",e.getMessage());
+         log("Error: ",e.getMessage());
          return false;
      }
     }
