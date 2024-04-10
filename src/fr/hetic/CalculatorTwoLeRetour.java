@@ -19,7 +19,7 @@ public class CalculatorTwoLeRetour {
                             File myObj = new File(s);
                             Scanner myReader = new Scanner(myObj);
                             String newFileName = myObj.getName().split("\\.")[0] + ".res";
-                            File newFile = new File("/Users/lounisord/Desktop/Cours/MT4/tp-java-siber/src/fr/hetic/results/" + newFileName);
+                            File newFile = new File(getCorrectDestination(myObj.getAbsolutePath()));
                             if (newFile.createNewFile()) {
                                 FileWriter myWriter = new FileWriter(newFile);
                                 System.out.println("File created: " + newFileName);
@@ -95,5 +95,7 @@ public class CalculatorTwoLeRetour {
         System.out.println(description + " " + obj.toString());
     }
 
-
+    public static String getCorrectDestination(String absolutePath) {
+        return absolutePath.replace(".op", ".res");
+    }
 }
