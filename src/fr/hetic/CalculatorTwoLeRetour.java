@@ -1,4 +1,6 @@
 package fr.hetic;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -9,7 +11,7 @@ public class CalculatorTwoLeRetour {
     public static final int ERROR = Integer.MIN_VALUE;
 
     public static void main(String[] args) {
-            File dir = new File("/Users/lounisord/Desktop/Cours/MT4/tp-java-siber/src/fr/hetic/operations");
+            File dir = new File("/Users/lounisord/Desktop/Cours/MT4/tp-java-siber/src/fr/hetic/inputs");
                 List<String> filePath = findCorrectFiles(dir.listFiles());
                 if (!filePath.isEmpty()) {
                     for (String s : filePath) {
@@ -26,34 +28,34 @@ public class CalculatorTwoLeRetour {
                                     String[] splitData = data.split(" ");
                                     if (verifiyOpArgs(splitData)) {
                                         int num1 = Integer.parseInt(splitData[0]);
-                                        printAny(num1);
                                         int num2 = Integer.parseInt(splitData[1]);
-                                        printAny(num2);
                                         String operation = splitData[2].toLowerCase();
                                         Integer operationResult = Calculator.findCorrectOperation(num1, num2, operation);
-                                        myWriter.write("L'opération " + data + ") est égale à: " + operationResult + "\n");
+                                        myWriter.write("L'opération " + num1 + " " + operation + " " + num2 + " est égale à: " + operationResult + "\n");
                                     } else {
-                                        myWriter.write("L'opération " + data + "est égale à : " + "ERROR");
+                                        myWriter.write("L'opération " + splitData[0] + " " + splitData[2] + " " + splitData[1] + " est égale à : " + "ERROR" + "\n");
                                     }
                                 }
                                 myWriter.close();
                             } else {
-                                System.out.println("File already exists.");
+                                printAny("Error", "File already exists.");
                             }
                         } catch (FileNotFoundException e) {
-                            System.out.println("An error occurred.");
-                            e.printStackTrace();
+                            printAny("Error","An error occurred.");
+                             printAny("Error",e.getMessage());
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
                     }
+                } else {
+                    printAny("Erreur", "il n'y a pas de fichiers d'opérations");
                 }
 
     }
 
     public static Boolean verifiyOpArgs(String[] args) {
         List<String> correctOperators = Arrays.asList(
-                "+", "-", "x"
+                "+", "-", "x", "*"
         );
      try {
          if (args.length != 3) {
@@ -66,27 +68,31 @@ public class CalculatorTwoLeRetour {
          Integer.parseInt(args[1]);
          return true;
      } catch (Exception e) {
-         printAny(e.getMessage());
+         printAny("Error: ",e.getMessage());
          return false;
      }
     }
 
     public static List<String> findCorrectFiles(File[] files){
-        List<String> filesPath = new ArrayList<>();
+        List<String> filesPath= new ArrayList<>();
         for (File file : files) {
             if (file.isDirectory()) {
                 System.out.println("Directory: " + file.getAbsolutePath());
-                findCorrectFiles(file.listFiles()); // Calls same method again.
+                /*findCorrectFiles(file.listFiles()); // Calls same method again.*/
+                filesPath.addAll(findCorrectFiles(file.listFiles()));
             } else {
                 System.out.println("File: " + file.getAbsolutePath());
-                filesPath.add(file.getAbsolutePath());
+                if (file.getName().toLowerCase().endsWith(".op")) {
+                    printAny("URL NAME",file.getName());
+                    filesPath.add(file.getAbsolutePath());
+                }
             }
         }
         return filesPath;
     }
 
-    public static void printAny(Object obj) {
-        System.out.println("PRINT : " + obj.toString());
+    public static void printAny(String description, Object obj ) {
+        System.out.println(description + " " + obj.toString());
     }
 
 

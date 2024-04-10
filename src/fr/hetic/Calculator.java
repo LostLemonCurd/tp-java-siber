@@ -21,7 +21,7 @@ public class Calculator {
         return switch (operator) {
             case "+" -> num1 + num2;
             case "-" -> num1 - num2;
-            case "x" -> num1 * num2;
+            case "x", "*" -> num1 * num2;
             default -> null;
         };
     }
