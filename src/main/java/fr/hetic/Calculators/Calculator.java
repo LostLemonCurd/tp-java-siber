@@ -1,4 +1,4 @@
-package fr.hetic;
+package fr.hetic.Calculators;
 
 public class Calculator {
     public static final int ERROR = Integer.MIN_VALUE; // Assuming ERROR code is different from valid results

@@ -1,10 +1,10 @@
-package fr.hetic;
-import fr.hetic.fileHandler.FileHandler;
+package fr.hetic.Calculators;
+import fr.hetic.FileHandler.FileHandler;
 
 import java.io.FileNotFoundException;
 import java.util.*;
 
-import static fr.hetic.PrintUtil.log;
+import static fr.hetic.PrintUtil.PrintUtil.log;
 
 public class CalculatorTwoLeRetour {
     public static void startProcessing(String args) throws FileNotFoundException {
@@ -20,8 +20,6 @@ public class CalculatorTwoLeRetour {
     public static Boolean verifyOpArgs(String[] args) {
         List<String> correctOperators = Arrays.asList("+", "-", "x", "*");
      try {
-         log("args+++++", args);
-         log("LENGTH+++++", args.length);
          if (args.length != 3) {
              throw new Exception("Number of arguments is not equal to three arguments");
          }

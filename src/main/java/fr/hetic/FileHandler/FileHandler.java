@@ -1,7 +1,6 @@
-package fr.hetic.fileHandler;
+package fr.hetic.FileHandler;
 
-import fr.hetic.Arguments;
-import fr.hetic.CalculatorTwoLeRetour;
+import fr.hetic.Arguments.Arguments;
 import fr.hetic.operations.OperationFactory;
 import fr.hetic.operations.OperationStrategy;
 
@@ -12,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import static fr.hetic.PrintUtil.log;
+import static fr.hetic.PrintUtil.PrintUtil.log;
 
 public class FileHandler {
     public static List<String> getFiles(String path) {
@@ -22,6 +21,7 @@ public class FileHandler {
 
     public static List<String> findCorrectFiles(File[] files) {
         List<String> filesPath = new ArrayList<>();
+        log("FILESPATH", filesPath);
         for (File file : files) {
             if (file.isDirectory()) {
                 filesPath.addAll(findCorrectFiles(file.listFiles()));
@@ -35,11 +35,11 @@ public class FileHandler {
     }
 
     public static void computeFiles(List<String> filePath) throws FileNotFoundException {
-        // switch to for each loop
         for (String s : filePath) {
             File myFile = new File(s);
             List<Arguments> dataFile = extractDataFromFile(myFile);
-            String fileName = getCorrectDestination(myFile.getAbsolutePath());
+            // String fileName = getCorrectDestination(myFile.getAbsolutePath());
+            String fileName = "/Users/lounisord/Desktop/Cours/MT4/tp-java-siber/src/main/java/fr/hetic/results/" + myFile.getName().replace(".op", ".res");
             fileCreation(dataFile, fileName);
         }
     }
@@ -51,6 +51,8 @@ public class FileHandler {
     public static void fileCreation(List<Arguments> dataFile, String fileName) {
         try {
             File newFile = new File(fileName);
+            // if newFile exists then we delete it
+            deleteIfExists(newFile);
             if (newFile.createNewFile()) {
                 FileWriter myWriter = new FileWriter(newFile);
                 dataFile.forEach(s -> {
@@ -70,6 +72,12 @@ public class FileHandler {
             log("Error", e.getMessage());
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void deleteIfExists(File newFile) throws IOException {
+        if (newFile.exists()) {
+            newFile.delete();
         }
     }
 
