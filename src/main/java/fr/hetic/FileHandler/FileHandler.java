@@ -77,6 +77,7 @@ public class FileHandler {
 
     public static void deleteIfExists(File newFile) throws IOException {
         if (newFile.exists()) {
+            log("File already exists", "deleting it");
             newFile.delete();
         }
     }
