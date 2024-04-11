@@ -5,17 +5,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import fr.hetic.Calculators.CalculatorTwoLeRetour;
 import org.junit.jupiter.api.Test;
 
-class OperationArgsVerification {
+class CalculatorTwoLeRetourTest {
 
     @Test
-    void correctData() {
+    public void correctData() {
         String[] testData = new String[]{"1", "2", "+"};
         Boolean result = CalculatorTwoLeRetour.verifyOpArgs(testData);
         assertTrue(result);
     }
 
     @Test
-    void falseData() {
+    public void falseData() {
         String[] testData = new String[]{"Z", "B", "p"};
         Boolean result = CalculatorTwoLeRetour.verifyOpArgs(testData);
         assertFalse(result);
