@@ -63,12 +63,12 @@ public class FileHandler {
                     FileWriter myWriter = new FileWriter(newFile);
                     dataFile.forEach(s -> {
                         if (Objects.equals(s.fileName, fileName)) {
-                        String content = computeFileContent(s);
-                        try {
-                            myWriter.write(content);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                            String content = computeFileContent(s);
+                            try {
+                                myWriter.write(content);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     });
                     myWriter.close();
@@ -95,7 +95,9 @@ public class FileHandler {
         Scanner myReader = new Scanner(myFile);
         List<Arguments> data = new ArrayList<>();
         while (myReader.hasNextLine()) {
-            // data.add(new Arguments(myReader.nextLine()));
+            String line = myReader.nextLine();
+            String tmpLine = line + " " + myFile.getName().replace(".op", "1");
+            data.add(new Arguments(tmpLine));
         }
         return data;
     }
@@ -103,7 +105,17 @@ public class FileHandler {
     public static List<Arguments> extractDataFromSQL(List<String[]> dbData) {
         List<Arguments> data = new ArrayList<>();
         for (String[] rowData : dbData) {
-            Arguments argument = new Arguments(rowData);
+            String arg0 = rowData[0]; // Extracting the first string
+            String arg1 = rowData[1]; // Extracting the second string
+            String arg2 = rowData[2]; // Extracting the third string
+            String fileName = rowData[3]; // Extracting the fourth string
+            String tmpData = arg0 + " " + arg1 + " " + arg2 + " " + fileName;
+            log("arg0", arg0);
+            log("arg1", arg1);
+            log("arg2", arg2);
+            log("FILENAMe", fileName);
+            log("tmpData", tmpData);
+            Arguments argument = new Arguments(tmpData);
             data.add(argument);
         }
         return data;

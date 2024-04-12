@@ -4,6 +4,8 @@ import fr.hetic.Calculators.CalculatorTwoLeRetour;
 
 import java.util.Arrays;
 
+import static fr.hetic.PrintUtil.PrintUtil.log;
+
 
 public class Arguments {
     public Integer number_1 = null;
@@ -15,17 +17,18 @@ public class Arguments {
     public String args_1;
     public String args_2;
 
-    public Arguments(String[] argument_line) {
-        String[] arguments = {argument_line[0], argument_line[1], argument_line[2]};
-        this.args_0 = argument_line[0];
-        this.args_1 = argument_line[1];
-        this.args_2 = argument_line[2];
-        this.fileName = argument_line[3];
-        if (CalculatorTwoLeRetour.verifyOpArgs(arguments)) {
-            this.number_1 = Integer.parseInt(argument_line[0]);
-            this.number_2 = Integer.parseInt(argument_line[1]);
-            this.operator = argument_line[2];
-            this.fileName = argument_line[3];
+    public Arguments(String argument_line) {
+        log("Argument°LINE", argument_line);
+        String[] arguments = argument_line.split(" ");
+        this.args_0 = arguments[0];
+        this.args_1 = arguments[1];
+        this.args_2 = arguments[2];
+        this.fileName = arguments[3];
+        if (CalculatorTwoLeRetour.verifyOpArgs(new String[]{arguments[0], arguments[1], arguments[2]})) {
+            this.number_1 = Integer.parseInt(arguments[0]);
+            this.number_2 = Integer.parseInt(arguments[1]);
+            this.operator = arguments[2];
+            this.fileName = arguments[3];
             this.isValid = true;
         }
 

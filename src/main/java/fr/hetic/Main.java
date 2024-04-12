@@ -1,6 +1,7 @@
 package fr.hetic;
 
 import fr.hetic.Arguments.Arguments;
+import fr.hetic.Calculators.CalculatorTwoLeRetour;
 import fr.hetic.FileHandler.FileHandler;
 
 import java.io.FileNotFoundException;
@@ -13,8 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException, ClassNotFoundException {
 
+    private static final String resultPath = "/Users/lounisord/Desktop/Cours/MT4/tp-java-siber/src/main/java/fr/hetic/inputs";
+
+
+    public static void main(String[] args) throws FileNotFoundException, ClassNotFoundException {
+        CalculatorTwoLeRetour.startProcessing(resultPath);
+        dataBaseProcessing();
+
+    }
+
+    public static void dataBaseProcessing() {
         String jdbcUrl = "jdbc:postgresql://SG-hetic-mt4-java-5275-pgsql-master.servers.mongodirector.com:5432/TP";
         String username = "etudiant";
         String password = "MT4@hetic2324";
