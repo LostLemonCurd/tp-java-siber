@@ -4,12 +4,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="directoryReader" class="fr.hetic.Reader.DirectoryReader">
-        <constructor-arg value="/Users/lounisord/Desktop/Cours/MT4/tp-java-siber/src/main/java/fr/hetic/inputs"/>
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:application.properties"/>
     </bean>
+
+    <bean id="directoryReader" class="fr.hetic.Reader.DirectoryReader">
+        <constructor-arg value="${file.url}"/>
+    </bean>
+
     <bean id="databaseReader" class="fr.hetic.Reader.DatabaseReader">
-        <constructor-arg value="jdbc:postgresql://SG-hetic-mt4-java-5275-pgsql-master.servers.mongodirector.com:5432/TP"/>
-        <constructor-arg value="etudiant"/>
-        <constructor-arg value="MT4@hetic2324"/>
+        <constructor-arg value="${db.jdbcUrl}"/>
+        <constructor-arg value="${db.username}"/>
+        <constructor-arg value="${db.password}"/>
     </bean>
 </beans>
