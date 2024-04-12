@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import static fr.hetic.PrintUtil.PrintUtil.log;
 
@@ -21,7 +22,6 @@ public class FileHandler {
 
     public static List<String> findCorrectFiles(File[] files) {
         List<String> filesPath = new ArrayList<>();
-        log("FILESPATH", filesPath);
         for (File file : files) {
             if (file.isDirectory()) {
                 filesPath.addAll(findCorrectFiles(file.listFiles()));
@@ -40,7 +40,7 @@ public class FileHandler {
             List<Arguments> dataFile = extractDataFromFile(myFile);
             // String fileName = getCorrectDestination(myFile.getAbsolutePath());
             String fileName = "/Users/lounisord/Desktop/Cours/MT4/tp-java-siber/src/main/java/fr/hetic/results/" + myFile.getName().replace(".op", ".res");
-            fileCreation(dataFile, fileName);
+            fileCreation(dataFile);
         }
     }
 
@@ -48,24 +48,33 @@ public class FileHandler {
         return absolutePath.replace(".op", ".res");
     }
 
-    public static void fileCreation(List<Arguments> dataFile, String fileName) {
+    public static void fileCreation(List<Arguments> dataFile) {
         try {
-            File newFile = new File(fileName);
-            // if newFile exists then we delete it
-            deleteIfExists(newFile);
-            if (newFile.createNewFile()) {
-                FileWriter myWriter = new FileWriter(newFile);
-                dataFile.forEach(s -> {
-                    String content = computeFileContent(s);
-                    try {
-                        myWriter.write(content);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-                myWriter.close();
-            } else {
-                log("Error", "File already exists.");
+            List<String> fileNames = new ArrayList<>();
+            for (Arguments args : dataFile) {
+                if (!fileNames.contains(args.fileName)) {
+                    fileNames.add(args.fileName);
+                }
+            }
+            for (String fileName : fileNames) {
+                File newFile = new File("/Users/lounisord/Desktop/Cours/MT4/tp-java-siber/src/main/java/fr/hetic/results/" + fileName + ".res");
+                deleteIfExists(newFile);
+                if (newFile.createNewFile()) {
+                    FileWriter myWriter = new FileWriter(newFile);
+                    dataFile.forEach(s -> {
+                        if (Objects.equals(s.fileName, fileName)) {
+                        String content = computeFileContent(s);
+                        try {
+                            myWriter.write(content);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        }
+                    });
+                    myWriter.close();
+                } else {
+                    log("Error", "File already exists.");
+                }
             }
         } catch (FileNotFoundException e) {
             log("Error", "An error occurred.");
@@ -86,7 +95,16 @@ public class FileHandler {
         Scanner myReader = new Scanner(myFile);
         List<Arguments> data = new ArrayList<>();
         while (myReader.hasNextLine()) {
-            data.add(new Arguments(myReader.nextLine()));
+            // data.add(new Arguments(myReader.nextLine()));
+        }
+        return data;
+    }
+
+    public static List<Arguments> extractDataFromSQL(List<String[]> dbData) {
+        List<Arguments> data = new ArrayList<>();
+        for (String[] rowData : dbData) {
+            Arguments argument = new Arguments(rowData);
+            data.add(argument);
         }
         return data;
     }
@@ -95,11 +113,11 @@ public class FileHandler {
         if (argument.isValid) {
             OperationStrategy operation = OperationFactory.createOperation(argument.operator);
             int result = operation.calculate(argument.number_1, argument.number_2);
-            return "L'opération " + argument.number_1 + " " + argument.operator + " " + argument.number_2
-                    + " est égale à: " + result + "\n";
+            return "FROM FILE (" + argument.fileName + ") : " + argument.number_1 + " " + argument.operator + " " + argument.number_2
+                    + " = " + result + "\n";
         } else {
-            return "L'opération " + argument.args_0 + " " + argument.args_2 + " " + argument.args_1
-                    + " est égale à: ERROR" + "\n";
+            return "FROM FILE (" + argument.fileName + ") : " + argument.args_0 + " " + argument.args_2 + " " + argument.args_1
+                    + " = ERROR" + "\n";
         }
     }
 }

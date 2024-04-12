@@ -1,3 +1,3 @@
-L'opération 1 + 1 est égale à: 2
-L'opération 2 - -1 est égale à: 3
-L'opération -3 * 0 est égale à: 0
+FROM FILE (operations) : 1 ^ 2 = ERROR
+FROM FILE (operations) : 2 * 2 = 4
+FROM FILE (operations) : 1 + 2 = 3
