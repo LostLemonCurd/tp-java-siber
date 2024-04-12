@@ -38,17 +38,19 @@ public class FileHandler {
         for (String s : filePath) {
             File myFile = new File(s);
             List<Arguments> dataFile = extractDataFromFile(myFile);
-            // String fileName = getCorrectDestination(myFile.getAbsolutePath());
-            String fileName = "/Users/lounisord/Desktop/Cours/MT4/tp-java-siber/src/main/java/fr/hetic/results/" + myFile.getName().replace(".op", ".res");
-            fileCreation(dataFile);
+            String fileName = myFile.getName();
+            log("FILENAME", fileName);
+            String destinationPath = getCorrectDestination(myFile.getAbsolutePath(), fileName);
+            log("PATH", destinationPath);
+            fileCreation(dataFile, destinationPath);
         }
     }
 
-    public static String getCorrectDestination(String absolutePath) {
-        return absolutePath.replace(".op", ".res");
+    public static String getCorrectDestination(String absolutePath, String fileName) {
+        return absolutePath.replace(fileName, "");
     }
 
-    public static void fileCreation(List<Arguments> dataFile) {
+    public static void fileCreation(List<Arguments> dataFile, String destinationPath) {
         try {
             List<String> fileNames = new ArrayList<>();
             for (Arguments args : dataFile) {
@@ -57,7 +59,7 @@ public class FileHandler {
                 }
             }
             for (String fileName : fileNames) {
-                File newFile = new File("/Users/lounisord/Desktop/Cours/MT4/tp-java-siber/src/main/java/fr/hetic/results/" + fileName + ".res");
+                File newFile = new File(destinationPath + fileName + ".res");
                 deleteIfExists(newFile);
                 if (newFile.createNewFile()) {
                     FileWriter myWriter = new FileWriter(newFile);
@@ -96,7 +98,7 @@ public class FileHandler {
         List<Arguments> data = new ArrayList<>();
         while (myReader.hasNextLine()) {
             String line = myReader.nextLine();
-            String tmpLine = line + " " + myFile.getName().replace(".op", "1");
+            String tmpLine = line + " " + myFile.getName().replace(".op", "");
             data.add(new Arguments(tmpLine));
         }
         return data;

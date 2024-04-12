@@ -18,7 +18,6 @@ public class Arguments {
     public String args_2;
 
     public Arguments(String argument_line) {
-        log("Argument°LINE", argument_line);
         String[] arguments = argument_line.split(" ");
         this.args_0 = arguments[0];
         this.args_1 = arguments[1];
