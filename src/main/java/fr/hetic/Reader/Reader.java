@@ -13,18 +13,13 @@ import java.util.List;
 import static fr.hetic.PrintUtil.PrintUtil.log;
 
 public class Reader {
-    @Autowired
-    private MethodInvokingFactoryBean fileReader;
 
-    public static void invokeStartProcessing(String args) throws FileNotFoundException {
-        CalculatorTwoLeRetour.startProcessing(args);
+    public void readData() {
+
     }
-
     public void fileReader(String filePath) throws FileNotFoundException {
         CalculatorTwoLeRetour.startProcessing(filePath);
     }
-
-
 
     public void dbReader(String jdbcUrl, String username, String password) {
             try {
@@ -56,7 +51,4 @@ public class Reader {
                 throw new RuntimeException("Failed to load MySQL JDBC driver", e);
             }
         }
-
-    public void setFileReader(MethodInvokingFactoryBean fileReader) {
-    }
 }

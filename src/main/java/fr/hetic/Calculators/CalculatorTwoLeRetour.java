@@ -7,14 +7,18 @@ import java.util.*;
 import static fr.hetic.PrintUtil.PrintUtil.log;
 
 public class CalculatorTwoLeRetour {
-    public static void startProcessing(String args) throws FileNotFoundException {
-                List<String> filePath = FileHandler.getFiles(args);
-                if (!filePath.isEmpty()) {
-                    FileHandler.computeFiles(filePath);
-                } else {
-                    log("Erreur", "il n'y a pas de fichiers d'opérations");
-                }
+    public static void startProcessing(String args) {
+        try {
+            List<String> filePath = FileHandler.getFiles(args);
+            if (!filePath.isEmpty()) {
+                FileHandler.computeFiles(filePath);
+            } else {
+                log("Erreur", "il n'y a pas de fichiers d'opérations");
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("Erreur: " + e.getMessage());
 
+        }
     }
 
     public static Boolean verifyOpArgs(String[] args) {

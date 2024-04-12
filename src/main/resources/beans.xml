@@ -4,20 +4,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- Define the Reader bean -->
-    <bean id="reader" class="fr.hetic.Reader.Reader">
-        <!-- Inject MethodInvokingFactoryBean -->
-        <property name="fileReader" ref="fileReaderBean"/>
+    <bean id="directoryReader" class="fr.hetic.Reader.DirectoryReader">
+        <constructor-arg value="/Users/lounisord/Desktop/Cours/MT4/tp-java-siber/src/main/java/fr/hetic/inputs"/>
     </bean>
-
-    <!-- Define MethodInvokingFactoryBean bean -->
-    <bean id="fileReaderBean" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="targetClass" value="fr.hetic.Reader.Reader" />
-        <property name="targetMethod" value="invokeStartProcessing" />
-        <property name="arguments">
-            <list>
-                <value>/Users/lounisord/Desktop/Cours/MT4/tp-java-siber/src/main/java/fr/hetic/inputs</value>
-            </list>
-        </property>
+    <bean id="databaseReader" class="fr.hetic.Reader.DatabaseReader">
+        <constructor-arg value="jdbc:postgresql://SG-hetic-mt4-java-5275-pgsql-master.servers.mongodirector.com:5432/TP"/>
+        <constructor-arg value="etudiant"/>
+        <constructor-arg value="MT4@hetic2324"/>
     </bean>
 </beans>
