@@ -1,0 +1,23 @@
+<!-- beans.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Define the Reader bean -->
+    <bean id="reader" class="fr.hetic.Reader.Reader">
+        <!-- Inject MethodInvokingFactoryBean -->
+        <property name="fileReader" ref="fileReaderBean"/>
+    </bean>
+
+    <!-- Define MethodInvokingFactoryBean bean -->
+    <bean id="fileReaderBean" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetClass" value="fr.hetic.Reader.Reader" />
+        <property name="targetMethod" value="invokeStartProcessing" />
+        <property name="arguments">
+            <list>
+                <value>/Users/lounisord/Desktop/Cours/MT4/tp-java-siber/src/main/java/fr/hetic/inputs</value>
+            </list>
+        </property>
+    </bean>
+</beans>
